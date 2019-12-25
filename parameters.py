@@ -52,12 +52,19 @@ class Parameters:
 
     def __init__(self, abbreviations_of_companies):
         self.abbreviations_of_companies = abbreviations_of_companies
+        self.list_source_df = []
 
         if len(self.abbreviations_of_companies) > 0:
             for i in self.abbreviations_of_companies:
                 self.source_df = pd.read_csv(os.path.join(path,r'%s_d.csv' % i), delimiter=',', index_col=[0]) # , index_col=[0]
+                self.source_df.index = pd.to_datetime(self.source_df.index) #TEST #ZDANY
+                self.list_source_df.append(self.source_df)
+
+
         else:
             self.source_df = pd.read_csv(os.path.join(path,r'%s_d.csv' % abbreviations_of_companies), delimiter=',', index_col=[0]) # , index_col=[0]
+            self.source_df.index = pd.to_datetime(self.source_df.index) #TEST # ZDANY
+            self.list_source_df.append(self.source_df)
 
     def describe_company_df(self):
         print(self.source_df.describe(include='all'))
@@ -71,16 +78,55 @@ class Parameters:
         return low_price
 
     def open_price(self):
-        open_price = self.source_df['Otwarcie']
-        return open_price
+
+        list_open_price = []
+        column_headlines = []
+
+        for i in self.list_source_df:
+            open_price = i['Otwarcie']
+            list_open_price.append(open_price)
+
+        for i in self.abbreviations_of_companies:
+            column_headlines.append('Open_price_%s' % i)
+
+        df_open_price = pd.concat(list_open_price, axis=1)
+        df_open_price.columns = column_headlines
+
+        return df_open_price
 
     def close_price(self):
-        close_price = self.source_df['Zamkniecie']
-        return close_price
+
+        list_close_price = []
+        column_headlines = []
+
+        for i in self.list_source_df:
+            close_price = i['Zamkniecie']
+            list_close_price.append(close_price)
+
+        for i in self.abbreviations_of_companies:
+            column_headlines.append('Close_price_%s' % i)
+
+        df_close_price = pd.concat(list_close_price, axis=1)
+        df_close_price.columns = column_headlines
+
+        return df_close_price
 
     def volume_stock(self):
-        volume_stock = self.source_df['Wolumen']
-        return volume_stock
+
+        list_volume_stock = []
+        column_headlines = []
+
+        for i in self.list_source_df:
+            volume_stock = i['Wolumen']
+            list_volume_stock.append(volume_stock)
+
+        for i in self.abbreviations_of_companies:
+            column_headlines.append('Wolumen_%s' % i)
+
+        # df_volume_stock = pd.concat(list_volume_stock, axis=1)
+        # df_volume_stock.columns = column_headlines
+
+        return list_volume_stock
 
     def daily_movement(self):
 
@@ -111,7 +157,7 @@ class Parameters:
             open_price_subtract = open_price.sub(close_price)
             price_subtract_sum = np.sum(open_price_subtract)
             x = 'price_subtract_sum for %s: ' % i, price_subtract_sum
-            print(x)
+            print(x) ###### !!!
 
             result = []
             result.append(str(x)) #SPRAWDZ

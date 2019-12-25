@@ -13,11 +13,8 @@ class DatabaseCreator:
 
         abbreviation_values = name_abbreviation_mWIG40_dict.values()
 
-
         pre_column_names = ['Open_price', 'Max', 'Min', 'Close_price', 'Volume']
         df_to_merge_list = []
-
-        # path = '/Users/michalozieblo/Desktop/stock-project-python/csv-files'
 
         for j in abbreviation_values:
 
