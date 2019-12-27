@@ -51,30 +51,30 @@ name_abbreviation_mWIG40_dict = {
     'Wirtualna_Polska_Holding': 'WPL'
 }
 
-abbreviations_of_companies = list(name_abbreviation_mWIG40_dict.values())
+class KMeansClustering:
 
-movements = Parameters(abbreviations_of_companies)
+    def kMeansClustering(self):
 
-daily_movement = movements.daily_movement()
+        abbreviations_of_companies = list(name_abbreviation_mWIG40_dict.values())
 
-df_array = daily_movement.to_numpy().T #ważne
+        movements = Parameters(abbreviations_of_companies)
 
-df_array[np.isnan(df_array)] = 0
+        daily_movement = movements.daily_movement()
+        df_array = daily_movement.to_numpy().T #ważne
+        df_array[np.isnan(df_array)] = 0
 
-normalizer = Normalizer()
+        normalizer = Normalizer()
+        kmeans = KMeans(n_clusters = 14,max_iter = 1000)
+        pipeline = make_pipeline(normalizer,kmeans)
 
-kmeans = KMeans(n_clusters = 14,max_iter = 1000)
+        pipeline.fit(df_array)
+        labels = pipeline.predict(df_array)
 
-pipeline = make_pipeline(normalizer,kmeans)
+        df = pd.DataFrame({'Labels':labels,
+                           'Companies':daily_movement.columns}).sort_values(by=['Labels'],
+                                                                            axis = 0)
 
-pipeline.fit(df_array)
+        return print(df)
 
-labels = pipeline.predict(df_array)
-
-print(len(df_array))
-
-print(len(labels))
-
-df = pd.DataFrame({'labels':labels, 'companies':daily_movement.columns}).sort_values(by=['labels'],axis = 0)
-
-print(df)
+# x = KMeansClustering()
+# x.kMeansClustering()
