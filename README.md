@@ -20,10 +20,10 @@ It consists of a fixed number of 40 companies. Companies for the mWIG40 index ar
 
 ### Resources
 
-https://www.geeksforgeeks.org/ml-determine-the-optimal-value-of-k-in-k-means-clustering/
-https://blog.cambridgespark.com/how-to-determine-the-optimal-number-of-clusters-for-k-means-clustering-14f27070048f
-https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.plotting.register_matplotlib_converters.html
-https://stackoverflow.com/questions/40815238/python-pandas-convert-index-to-datetime
+- https://www.geeksforgeeks.org/ml-determine-the-optimal-value-of-k-in-k-means-clustering/
+- https://blog.cambridgespark.com/how-to-determine-the-optimal-number-of-clusters-for-k-means-clustering-14f27070048f
+- https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.plotting.register_matplotlib_converters.html
+- https://stackoverflow.com/questions/40815238/python-pandas-convert-index-to-datetime
 
 #### Acknowledgments to the author of the below publication for the inspiration to undertake this project:
 https://medium.com/datadriveninvestor/stock-market-clustering-with-k-means-clustering-in-python-4bf6bd5bd685
