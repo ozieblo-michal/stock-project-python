@@ -24,6 +24,8 @@ It consists of a fixed number of 40 companies. Companies for the mWIG40 index ar
 - https://blog.cambridgespark.com/how-to-determine-the-optimal-number-of-clusters-for-k-means-clustering-14f27070048f
 - https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.plotting.register_matplotlib_converters.html
 - https://stackoverflow.com/questions/40815238/python-pandas-convert-index-to-datetime
+- https://www.semicolonworld.com/question/58756/datetime-x-axis-matplotlib-labels-causing-uncontrolled-overlap
+- https://stackoverflow.com/questions/25440008/python-pandas-flatten-a-dataframe-to-a-list
 
 #### Acknowledgments to the author of the below publication for the inspiration to undertake this project:
 https://medium.com/datadriveninvestor/stock-market-clustering-with-k-means-clustering-in-python-4bf6bd5bd685
