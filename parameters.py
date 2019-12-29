@@ -2,49 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-name_abbreviation_mWIG40_dict = {
-    'mWIG40': 'mWIG40',
-    '11_bit_studios': '11B',
-    'Asseco_Poland': 'ACP',
-    'Amica': 'AMC',
-    'Grupa_Azoty': 'ATT',
-    'Budimex': 'BDX',
-    'Benefit_Systems': 'BFT',
-    'Bank_Handlowy_w_Warszawie': 'BHW',
-    'BNP_Paribas_Bank_Polska': 'BNP',
-    'Boryszew': 'BRS',
-    'Inter_Cars': 'CAR',
-    'Ciech': 'CIE',
-    'CI_Games': 'CIG',
-    'Celon_Pharma': 'CLN',
-    'Comarch': 'CMR',
-    'Develia': 'DVL',
-    'AmRest_Holdings': 'EAT',
-    'Echo_Investment': 'ECH',
-    'Enea': 'ENA',
-    'Energa': 'ENG',
-    'Eurocash': 'EUR',
-    'Fabryka_Maszyn_Famur': 'FMF',
-    'Fabryki_Mebli_Forte': 'FTE',
-    'Giełda_Papierów_Wartościowych_w_Warszawie': 'GPW',
-    'Globe_Trade_Centre': 'GTC',
-    'Getin_Holding': 'GTN',
-    'ING_Bank_Śląski': 'ING',
-    'Kernel_Holding': 'KER',
-    'Kruk': 'KRU',
-    'Grupa_Kęty': 'KTY',
-    'LiveChat_Software': 'LVC',
-    'Lubelski_Węgiel_Bogdanka': 'LWB',
-    'Mabion': 'MAB',
-    'Bank_Millennium': 'MIL',
-    'Orbis': 'ORB',
-    'PKP_Cargo': 'PKP',
-    'PlayWay': 'PLW',
-    'Stalprodukt': 'STP',
-    'Ten_Square_Games': 'TEN',
-    'VRG': 'VRG',
-    'Wirtualna_Polska_Holding': 'WPL'
-}
+from dict_stock_project import name_abbreviation_mWIG40_dict
 
 path = '/Users/michalozieblo/Desktop/stock-project-python/csv-files'
 
@@ -56,26 +14,52 @@ class Parameters:
 
         if len(self.abbreviations_of_companies) > 0:
             for i in self.abbreviations_of_companies:
-                self.source_df = pd.read_csv(os.path.join(path,r'%s_d.csv' % i), delimiter=',', index_col=[0]) # , index_col=[0]
-                self.source_df.index = pd.to_datetime(self.source_df.index) #TEST #ZDANY
+                self.source_df = pd.read_csv(os.path.join(path,r'%s_d.csv' % i),
+                                             delimiter=',',
+                                             index_col=[0]) # important
+                self.source_df.index = pd.to_datetime(self.source_df.index)
                 self.list_source_df.append(self.source_df)
 
-
         else:
-            self.source_df = pd.read_csv(os.path.join(path,r'%s_d.csv' % abbreviations_of_companies), delimiter=',', index_col=[0]) # , index_col=[0]
-            self.source_df.index = pd.to_datetime(self.source_df.index) #TEST # ZDANY
+            self.source_df = pd.read_csv(os.path.join(path,r'%s_d.csv' % abbreviations_of_companies),
+                                         delimiter=',',
+                                         index_col=[0]) # important
+            self.source_df.index = pd.to_datetime(self.source_df.index)
             self.list_source_df.append(self.source_df)
 
-    def describe_company_df(self):
-        print(self.source_df.describe(include='all'))
-
     def high_price(self):
-        high_price = self.source_df['Najwyzszy']
-        return high_price
+
+        list_high_price = []
+        column_headlines = []
+
+        for i in self.list_source_df:
+            high_price = i['Najwyzszy']
+            list_high_price.append(high_price)
+
+        for i in self.abbreviations_of_companies:
+            column_headlines.append('Max_price_%s' % i)
+
+        df_high_price = pd.concat(list_high_price, axis=1)
+        df_high_price.columns = column_headlines
+
+        return df_high_price
 
     def low_price(self):
-        low_price = self.source_df['Najnizszy']
-        return low_price
+
+        list_low_price = []
+        column_headlines = []
+
+        for i in self.list_source_df:
+            low_price = i['Najnizszy']
+            list_low_price.append(low_price)
+
+        for i in self.abbreviations_of_companies:
+            column_headlines.append('Min_price_%s' % i)
+
+        df_low_price = pd.concat(list_low_price, axis=1)
+        df_low_price.columns = column_headlines
+
+        return df_low_price
 
     def open_price(self):
 
@@ -114,23 +98,29 @@ class Parameters:
     def volume_stock(self):
 
         list_volume_stock = []
-        column_headlines = []
+
 
         for i in self.list_source_df:
             volume_stock = i['Wolumen']
             list_volume_stock.append(volume_stock)
 
-        for i in self.abbreviations_of_companies:
-            column_headlines.append('Wolumen_%s' % i)
-
+        # FOR DATAFRAME:
+        #
+        # column_headlines = []
+        # for i in self.abbreviations_of_companies:
+        #     column_headlines.append('Wolumen_%s' % i)
         # df_volume_stock = pd.concat(list_volume_stock, axis=1)
         # df_volume_stock.columns = column_headlines
 
         return list_volume_stock
 
+    # ZROBIC DWIE FUNKCJE, jedna do wizualizacji, druga na wydruk
+
     def daily_movement(self):
 
-        database = pd.read_csv(os.path.join(path,r'database.csv'), delimiter=',', index_col=[0]) # , index_col=[0] BARDZO WAZNE # , delimiter=','
+        database = pd.read_csv(os.path.join(path,r'database.csv'),
+                               delimiter=',',
+                               index_col=[0]) # important
 
         list_open_close_price = []
         column_headlines = []
@@ -147,6 +137,8 @@ class Parameters:
 
         return daily_movement
 
+    # DODAC TEST NA WYPADEK BRAKU DATABASE
+
     def sum_of_movements(self):
 
         database = pd.read_csv(os.path.join(path,r'database.csv'))
@@ -157,14 +149,17 @@ class Parameters:
             open_price_subtract = open_price.sub(close_price)
             price_subtract_sum = np.sum(open_price_subtract)
             x = 'price_subtract_sum for %s: ' % i, price_subtract_sum
-            print(x) ###### !!!
 
             result = []
-            result.append(str(x)) #SPRAWDZ
+            result.append(str(x))
 
         return result
+
+    # ZBADAC DLACZEGO NIE IDZIE TEGO WRZUCIC NA SOLO DO STR(), TYLKO TAK ROZWALONE
 
     if __init__ == "__main__":
         print("Parameters run directly")
     else:
         print("Parameters imported into another module")
+
+    # zastosuj do nazw klucze do slownika :)

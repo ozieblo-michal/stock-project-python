@@ -13,8 +13,6 @@ df_array = x.to_numpy()
 
 df_array[np.isnan(df_array)] = 0
 
-print(df_array)
-
 normalizer = Normalizer()
 
 norm_movements = normalizer.fit_transform(df_array)
@@ -25,7 +23,6 @@ print(norm_movements.max())
 print(norm_movements.mean())
 
 plt.plot(norm_movements)
-
 plt.show()
 
 print()

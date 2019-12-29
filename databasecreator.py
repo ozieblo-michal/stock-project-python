@@ -22,16 +22,18 @@ class DatabaseCreator:
 
             df_to_merge = pd.read_csv(os.path.join(path,r'%s_d.csv' % j),
                                       delimiter=',',
-                                      index_col='Data')  # turbowazne
+                                      index_col='Data') # important
 
-            df_to_merge.index = pd.to_datetime(df_to_merge.index) # https://stackoverflow.com/questions/40815238/python-pandas-convert-index-to-datetime
+            df_to_merge.index = pd.to_datetime(df_to_merge.index)
+
             df_to_merge.columns = column_names_with_suffix
             df_to_merge.index.names = ['Date']
 
             df_to_merge_list.append(df_to_merge)
-            database = pd.concat(df_to_merge_list,
+
+        database = pd.concat(df_to_merge_list,
                                  axis=1,
-                                 sort=True)  # turbowazne
+                                 sort=True)  # important
 
         print('poszlo')
         return database.to_csv(os.path.join(path,r'database.csv'))
@@ -43,5 +45,3 @@ class DatabaseCreator:
 
 a = DatabaseCreator()
 a.database_creator()
-
-# sprawdz puste rekordy, screen na ekranie

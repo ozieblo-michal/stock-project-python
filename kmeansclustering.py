@@ -1,4 +1,6 @@
 from parameters import Parameters, name_abbreviation_mWIG40_dict
+from dict_stock_project import sectors_mWIG40_dict
+
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import Normalizer
 from sklearn.cluster import KMeans
@@ -8,55 +10,6 @@ from matplotlib import style
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
-# K-means:
-# The clustering algorithm tries to partition a set of points into K sets (clusters)
-# such that the points in each cluster tend to be near each other.
-# It is unsupervised because the points have no external classification.
-
-sectors_mWIG40_dict = {
-    'mWIG40':'MARKET INDICATOR',
-    '11B':'GAMING',
-    'ACP':'IT',
-    'AMC':'AGD',
-    'ATT':'CHEMICALS',
-    'BDX':'INFRASTRUCTURE',
-    'BFT':'SERVICES',
-    'BHW':'BANK',
-    'BNP':'BANK',
-    'BRS':'CHEMICALS AND CAR PARTS',
-    'CAR':'CAR PARTS',
-    'CIE':'CHEMICALS',
-    'CIG':'GAMING',
-    'CLN':'BIOTECH',
-    'CMR':'IT',
-    'DVL':'CONSTRUCTION DEVELOPER',
-    'EAT':'FOOD INDUSTRY',
-    'ECH':'CONSTRUCTION DEVELOPER',
-    'ENA':'ENERGETICS',
-    'ENG':'ENERGETICS',
-    'EUR':'FOOD INDUSTRY',
-    'FMF':'MINING INDUSTRY',
-    'FTE':'FURNITURE',
-    'GPW':'STOCK EXCHANGE',
-    'GTC':'CONSTRUCTION DEVELOPER',
-    'GTN':'BANK',
-    'ING':'BANK',
-    'KER':'FOOD INDUSTRY',
-    'KRU':'VINDICATION',
-    'KTY':'METAL PROCESSING',
-    'LVC':'IT',
-    'LWB':'MINING INDUSTRY',
-    'MAB':'BIOTECH',
-    'MIL':'BANK',
-    'ORB':'HOSPITALITY',
-    'PKP':'RAILWAYS',
-    'PLW':'GAMING',
-    'STP':'METAL PROCESSING',
-    'TEN':'GAMING',
-    'VRG':'CLOTHES',
-    'WPL':'IT'
-}
 
 class KMeansClustering:
 
@@ -68,7 +21,7 @@ class KMeansClustering:
 
         daily_movement = movements.daily_movement()
 
-        # a dataframe to an array and the transpose of a matrix
+        # a dataframe transformation into an array and the transpose of a matrix
         df_array = daily_movement.to_numpy().T
 
         # impact on the result, but not significant on a large scale.
@@ -77,8 +30,7 @@ class KMeansClustering:
 
         style.use("seaborn-pastel")
 
-        # make_blobs() is used to generate sample points
-        # around c centers (randomly chosen)
+        # make_blobs() is used to generate sample points around c centers (randomly chosen)
         X, y = make_blobs(n_samples=400,
                           centers=10,
                           cluster_std=1,
@@ -94,7 +46,6 @@ class KMeansClustering:
         plt.show()
         # clear the figure
         plt.clf()
-        # more about: https://www.geeksforgeeks.org/ml-determine-the-optimal-value-of-k-in-k-means-clustering/
 
         # Elbow Method For Optimal k
         sum_of_squared_distances = []
@@ -111,10 +62,9 @@ class KMeansClustering:
         plt.title('Elbow Method For Optimal k')
         plt.show()
         plt.clf()
-        # more about: https://blog.cambridgespark.com/how-to-determine-the-optimal-number-of-clusters-for-k-means-clustering-14f27070048f
 
         normalizer = Normalizer()
-        kmeans = KMeans(n_clusters = 10,
+        kmeans = KMeans(n_clusters = 3,
                         max_iter = 1000)
         pipeline = make_pipeline(normalizer,kmeans)
         pipeline.fit(df_array)
