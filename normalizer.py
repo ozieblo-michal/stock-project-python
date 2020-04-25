@@ -1,28 +1,41 @@
-from sklearn.preprocessing import Normalizer
-from parameters import Parameters
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import normalize
+from parameters import Parameters
 
-abbreviations_of_companies = input("Enter abbreviations of companies: ").split()
+'''
+need parameters.py to run
+'''
 
+# Take the companies to analyse. Manual input from the user as name abbreviations.
+abbreviations_of_companies = input("Enter company/-ies abbreviation(s) (blank space between if multiple, not a coma): ").split()
+
+# instance of Parameters class to obtain daily movement:
 movements = Parameters(abbreviations_of_companies)
 
-x = movements.daily_movement()
+# daily movement dataframe(s):
+daily_movement_object = movements.daily_movement()
 
-df_array = x.to_numpy()
+# Replace NaN with 0's:
+daily_movement_object.fillna(0)
 
+# Convert the DataFrame to a NumPy array:
+df_array = daily_movement_object.to_numpy()
+
+# Test element-wise for Not a Number (NaN), return result as a bool array, change for 0 if True:
 df_array[np.isnan(df_array)] = 0
 
-normalizer = Normalizer()
+# Normalize samples individually to unit norm:
+norm_movements = normalize(df_array, axis=0)
 
-norm_movements = normalizer.fit_transform(df_array)
+# Simple check of normalization:
+print('check after normalization - MIN VALUE (range between -1 and 0): ', norm_movements.min())
+print('check after normalization - MAX VALUE (range between 0 and 1): ',norm_movements.max())
+print('check after normalization - MEAN VALUE (properly should be near null): ',norm_movements.mean())
 
-print(norm_movements)
-print(norm_movements.min())
-print(norm_movements.max())
-print(norm_movements.mean())
-
+# Plot of distribution:
 plt.plot(norm_movements)
+plt.suptitle("Daily price movements of companies:", fontsize=12)
+plt.title("(the result of subtracting the opening price logarithm and the closing price logarithm)", fontsize=8)
+plt.gca().legend(abbreviations_of_companies)
 plt.show()
-
-print()
