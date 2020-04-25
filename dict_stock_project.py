@@ -1,3 +1,13 @@
+'''
+Dictionaries in the file:
+`name_abbreviation_mWIG40_dict` - values: full name of the company, keys: its shortcut
+`sectors_mWIG40_dict` - values: shortcut of the companys' full name, keys: market cluster
+
+Notes:
+1. Market clusters are picked subjectively, based on market knowledge.
+2. mWIG40 included additionally, used next as the index benchmark.
+'''
+
 name_abbreviation_mWIG40_dict = {
     'mWIG40': 'mWIG40',
     '11_bit_studios': '11B',
