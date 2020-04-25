@@ -1,8 +1,11 @@
 import pandas as pd
 import os
 
-from parameters import name_abbreviation_mWIG40_dict
+# source to path to .csv files with historical values for each company
 from parameters import path
+
+# dict_stock_project contains dictionaries
+from dict_stock_project import name_abbreviation_mWIG40_dict
 
 class DatabaseCreator:
 
@@ -11,8 +14,28 @@ class DatabaseCreator:
 
     def database_creator(self):
 
-        abbreviation_values = name_abbreviation_mWIG40_dict.values()
+        '''
+        First and main process of the whole project. Creates the main database created by concatenation historical \
+        data of mWIG40 companies in December 2019 with index based on date. Missed values related with a time before \
+        company listing or suspended quotes included.
 
+        abbreviation_values - List of full names of companies from the dictionary.
+
+        pre_column_names - List of target prefix for each column merged with the company name shortcut, \
+        translation due to polish names of each column title in source files.
+
+        df_to_merge - Temporary dataframe used in a loop with loaded source data for each single company.
+
+        df_to_merge_list - List of single dataframes with values for each single company.
+
+        column_names_with_suffix - Temporary list used in a loop to create company specific column names.
+
+        database - Dataframe with the main database.
+
+        :return: `database.csv` - The main database.
+        '''
+
+        abbreviation_values = name_abbreviation_mWIG40_dict.values()
         pre_column_names = ['Open_price', 'Max', 'Min', 'Close_price', 'Volume']
         df_to_merge_list = []
 
@@ -22,7 +45,7 @@ class DatabaseCreator:
 
             df_to_merge = pd.read_csv(os.path.join(path,r'%s_d.csv' % j),
                                       delimiter=',',
-                                      index_col='Data') # important
+                                      index_col='Data') # index set based on `Data` column is important to remember
 
             df_to_merge.index = pd.to_datetime(df_to_merge.index)
 
@@ -33,15 +56,18 @@ class DatabaseCreator:
 
         database = pd.concat(df_to_merge_list,
                                  axis=1,
-                                 sort=True)  # important
+                                 sort=True)  # sorting is important to successfull creation of the database
 
-        print('poszlo')
+        print('Main database created by concatenation historical data of mWIG40 companies in December 2019 \n \
+              with index based on date. \n \
+              Missed values related with a time before company listing or suspended quotes included.')
         return database.to_csv(os.path.join(path,r'database.csv'))
 
     if __init__ == "__main__":
-        print("DatabaseCreator run directly")
+        print("ADMIN INFO: DatabaseCreator run directly")
     else:
-        print("DatabaseCreator imported into another module")
+        print("ADMIN INFO: DatabaseCreator imported into another module")
 
-a = DatabaseCreator()
-a.database_creator()
+#instance of the class and main function induction to local run:
+dummy_instance_of_DatabaseCreator = DatabaseCreator()
+dummy_instance_of_DatabaseCreator.database_creator()
