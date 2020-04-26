@@ -1,12 +1,8 @@
-from parameters import Parameters, name_abbreviation_mWIG40_dict
-from dict_stock_project import sectors_mWIG40_dict
+from parameters import Parameters
+from dict_stock_project import name_abbreviation_mWIG40_dict, sectors_mWIG40_dict
 
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import Normalizer
 from sklearn.cluster import KMeans
-from sklearn.datasets.samples_generator import make_blobs
-from matplotlib import style
-
+from sklearn.preprocessing import normalize
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -19,41 +15,39 @@ class KMeansClustering:
 
         movements = Parameters(abbreviations_of_companies)
 
-        daily_movement = movements.daily_movement()
+        daily_movement_object = movements.daily_movement()
+
+        # Replace NaN with 0's:
+        daily_movement_object.fillna(0)
 
         # a dataframe transformation into an array and the transpose of a matrix
-        df_array = daily_movement.to_numpy().T
+        norm_movements = daily_movement_object.to_numpy()
 
-        # impact on the result, but not significant on a large scale.
-        # zero means no change in the price of the item on a given day.
-        df_array[np.isnan(df_array)] = 0
+        # Replace NaN with 0's:
+        norm_movements[np.isnan(norm_movements)] = 0
 
-        style.use("seaborn-pastel")
+        # Normalize samples individually to unit norm:
+        norm_movements = normalize(norm_movements, axis=0)
 
-        # make_blobs() is used to generate sample points around c centers (randomly chosen)
-        X, y = make_blobs(n_samples=400,
-                          centers=10,
-                          cluster_std=1,
-                          n_features=2)
+        # data transpose due to the KMean algorythm specific construction (calculation on columns, not rows):
+        norm_movements = norm_movements.transpose()
 
-        plt.scatter(X[:, 0],
-                    X[:, 1],
-                    s=5,
-                    color='r')
+        # print of control information about data shape:
+        print('daily_movement_object shape: ',daily_movement_object.shape)
+        print('norm_movements shape: ',norm_movements.shape)
 
-        plt.xlabel('X')
-        plt.ylabel('Y')
-        plt.show()
-        # clear the figure
-        plt.clf()
+        # Test element-wise for Not a Number (NaN), return result as a bool array, change for 0 if True
+        # (Impact on the result, but not significant on a large scale. Zero means no change in the price of the item \
+        # on a given day):
+        norm_movements[np.isnan(norm_movements)] = 0
 
         # Elbow Method For Optimal k
         sum_of_squared_distances = []
-        K = range(1, 16)
+        K = range(1, 22)
 
         for k in K:
             km = KMeans(n_clusters=k)
-            km = km.fit(df_array)
+            km = km.fit(norm_movements)
             sum_of_squared_distances.append(km.inertia_)
 
         plt.plot(K, sum_of_squared_distances, 'bx-')
@@ -63,23 +57,43 @@ class KMeansClustering:
         plt.show()
         plt.clf()
 
-        normalizer = Normalizer()
-        kmeans = KMeans(n_clusters = 3,
-                        max_iter = 1000)
-        pipeline = make_pipeline(normalizer,kmeans)
-        pipeline.fit(df_array)
-        labels = pipeline.predict(df_array)
+        kmeans = KMeans(n_clusters = 16, # subjective selection of both parameters
+                        max_iter = 1500)
+
+        condition = False
 
         x = list(name_abbreviation_mWIG40_dict.values())
-        y =[]
 
-        for i in x:
-            y.append(sectors_mWIG40_dict[i])
-        print(y)
+        while not condition:
+            kmeans.fit(norm_movements)
+            labels = kmeans.predict(norm_movements)
 
-        df = pd.DataFrame({'Labels':labels,
-                           'Companies':daily_movement.columns,
-                           'Economic sector':y}).sort_values(by=['Labels','Economic sector'], axis = 0)
+            y = []
+
+            for i in x:
+                y.append(sectors_mWIG40_dict[i])
+
+            df = pd.DataFrame({'Labels':labels,
+                               'Companies':daily_movement_object.columns,
+                               'Economic sector':y}).sort_values(by=['Labels','Economic sector'],axis = 0)
+
+            # condition due to commonly known trend
+            ENERGETICS_test = df.loc[df['Economic sector'] == 'ENERGETICS']
+            label = ENERGETICS_test['Labels'].to_list()
+            condition_ENERGETICS = (len(set(label)) <= 1)
+            print('------------------')
+            print(label)
+
+            GAMING_test = df.loc[df['Economic sector'] == 'GAMING']
+            label = GAMING_test['Labels'].to_list()
+            condition_GAMING = (len(set(label)) <= 1)
+            print(label)
+
+            print(condition_ENERGETICS, condition_GAMING)
+            print('------------------')
+
+            if all([condition_ENERGETICS, condition_GAMING]):
+                condition = True
 
         return print(df)
 
