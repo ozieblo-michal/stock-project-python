@@ -5,6 +5,8 @@ from parameters import Parameters
 
 '''
 need parameters.py to run
+
+test file to properly set up the normalization into kmeanclustering.py (unrelated files to run).
 '''
 
 # Take the companies to analyse. Manual input from the user as name abbreviations.
@@ -24,6 +26,8 @@ df_array = daily_movement_object.to_numpy()
 
 # Test element-wise for Not a Number (NaN), return result as a bool array, change for 0 if True:
 df_array[np.isnan(df_array)] = 0
+
+print(df_array.shape)
 
 # Normalize samples individually to unit norm:
 norm_movements = normalize(df_array, axis=0)
