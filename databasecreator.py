@@ -15,7 +15,7 @@ class DatabaseCreator:
     def database_creator(self):
 
         '''
-        First and main process of the whole project. Creates the main database created by concatenation historical \
+        The first and main process of the whole project. Creates the main database created by concatenation historical \
         data of mWIG40 companies in December 2019 with index based on date. Missed values related with a time before \
         company listing or suspended quotes included.
 
@@ -58,9 +58,9 @@ class DatabaseCreator:
                                  axis=1,
                                  sort=True)  # sorting is important to successfull creation of the database
 
-        print('Main database created by concatenation historical data of mWIG40 companies in December 2019 \n \
-              with index based on date. \n \
-              Missed values related with a time before company listing or suspended quotes included.')
+        print('Success! Main database created by concatenation historical data of mWIG40 companies in December 2019 ',
+              'with index based on date.\n',
+              'Warning! Missed values related with a time before company listing or suspended quotes included!')
         return database.to_csv(os.path.join(path,r'database.csv'))
 
     if __init__ == "__main__":
