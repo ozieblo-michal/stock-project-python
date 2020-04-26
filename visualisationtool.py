@@ -73,8 +73,8 @@ class Visualisationtool:
         list_volume_stock = Parameters(abbreviations_of_companies).volume_stock()
         fig, axs = plt.subplots(len(list_volume_stock),1)
         for i, df in enumerate(list_volume_stock):
-            axs[i].bar(df.index, df.values.flatten())
-            axs[i].set_title('%s' % abbreviations_of_companies[i])
+            axs.bar(df.index, df.values.flatten())
+            axs.set_title('%s' % abbreviations_of_companies[i])
         plt.gcf().autofmt_xdate()
         return plt.show()
 
@@ -119,6 +119,8 @@ class Visualisationtool:
                                                      close=df_close_price.values.flatten())
                                   ])
             fig.show()
+
+            # https://plot.ly/python/candlestick-charts/
 
     if __init__ == "__main__":
         print("Visualisationtool run directly")
