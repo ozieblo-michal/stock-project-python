@@ -11,7 +11,7 @@ It consists of a fixed number of 40 companies.
 
 ### Sample results:
 
-![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2021.08.34.png)
+![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2022.10.38.png)
 
 ![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2021.11.24.png)
 
