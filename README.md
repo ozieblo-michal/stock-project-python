@@ -9,6 +9,20 @@ It is unsupervised method since the points have no external classification.
 Stock price index of medium-sized companies listed on the Warsaw Stock Exchange.
 It consists of a fixed number of 40 companies. Companies for the mWIG40 index are selected on the basis of the same ranking as for WIG20 and sWIG80 as 40 consecutive 20 qualified to WIG20.
 
+### Sample results:
+
+![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2021.08.34.png)
+
+![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2021.11.24.png)
+
+![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2021.12.08.png)
+
+![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2021.12.31.png)
+
+![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2021.13.14.png)
+
+![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2021.14.58.png)
+
 ### Built With
 
 - pandas
