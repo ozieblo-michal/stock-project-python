@@ -1,5 +1,5 @@
 # stock-project-python
-K-means classification of listed companies to economic sectors based on the price movement.
+K-means classification of listed companies to economic sectors based on the price movement and visualization of price and stock volume changes (different algorythms and the dashboard in the future). Sample results below.
 
 ### K-means:
 This clustering algorithm seeks to partition a set of points into K sets (clusters) such that the points in each cluster tend to be near each other.
@@ -7,7 +7,7 @@ It is unsupervised method since the points have no external classification.
 
 ### mWIG40:
 Stock price index of medium-sized companies listed on the Warsaw Stock Exchange.
-It consists of a fixed number of 40 companies. Companies for the mWIG40 index are selected on the basis of the same ranking as for WIG20 and sWIG80 as 40 consecutive 20 qualified to WIG20.
+It consists of a fixed number of 40 companies.
 
 ### Sample results:
 
@@ -22,15 +22,6 @@ It consists of a fixed number of 40 companies. Companies for the mWIG40 index ar
 ![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2021.13.14.png)
 
 ![](https://github.com/ozieblo-repository/stock-project-python/blob/master/screenshots/Screenshot%202020-04-28%20at%2021.14.58.png)
-
-### Built With
-
-- pandas
-- numpy
-- sklearn
-- matplotlib
-- os
-- plotly
 
 ### Resources
 
