@@ -18,13 +18,13 @@ movements = Parameters(abbreviations_of_companies)
 # daily movement dataframe(s):
 daily_movement_object = movements.daily_movement()
 
-# Replace NaN with 0's:
+# Replace Not a Number (NaN) with 0's:
 daily_movement_object.fillna(0)
 
 # Convert the DataFrame to a NumPy array:
 df_array = daily_movement_object.to_numpy()
 
-# Test element-wise for Not a Number (NaN), return result as a bool array, change for 0 if True:
+# Test element-wise for NaN, return result as a bool array, change for 0 if True:
 df_array[np.isnan(df_array)] = 0
 
 # Normalize samples individually to unit norm:
