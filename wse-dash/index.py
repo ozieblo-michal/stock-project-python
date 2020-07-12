@@ -68,7 +68,7 @@ def toggle_collapse(n, is_open):
 
 @app.callback(
     Output("collapse3", "is_open"),
-    [Input("collapse-button-mWIG80", "n_clicks")],
+    [Input("collapse-button-sWIG80", "n_clicks")],
     [State("collapse3", "is_open")],
 )
 def toggle_collapse(n, is_open):
@@ -76,16 +76,19 @@ def toggle_collapse(n, is_open):
         return not is_open
     return is_open
 
-@app.callback(Output("output", "children"), [Input("input", "value")])
+@app.callback(
+    Output("output", "children"),
+    [Input("input", "value")])
 def output_text(value):
     return value
 
-@app.callback(Output('datatable','srcDoc'),
-            [Input('submit-button','n_clicks')],
-             [State('datatable','value')])
+@app.callback(
+    Output('datatable','srcDoc'),
+    [Input('submit-button','n_clicks')],
+    [State('datatable','value')])
 
 def update_datatable(n_clicks,csv_file):
-    if n_clicks:
+    if n_clicks is not None:
         df = KMeansClustering()
         x = df.kMeansClustering()
         return x.to_html()
@@ -102,8 +105,6 @@ def toggle_collapse(n, is_open):
     return is_open
 
 
-
-
 @app.callback(
     Output("collapse-clusters", "is_open"),
     [Input("submit-button", "n_clicks")],
@@ -113,6 +114,20 @@ def toggle_collapse(n, is_open):
     if n:
         return not is_open
     return is_open
+
+
+
+
+import os
+
+@app.callback(
+    Output('hidden-div', 'children'),
+    [Input('run-scrapper-and-find-best-comp', 'n_clicks')])
+def run_script_onClick(n_clicks):
+    if n_clicks is not None:
+        print("TEST")
+        return os.system('python3 /Users/michalozieblo/Desktop/wse-dash/scrapper.py')
+
 
 
 

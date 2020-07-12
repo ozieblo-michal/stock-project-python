@@ -11,10 +11,10 @@ print(type(abbreviations_of_companies[0]))
 #x.candlestick(abbreviations_of_companies)
 
 
-# # x.vis_daily_movement(abbreviations_of_companies)
-#x.vis_high_price(abbreviations_of_companies)
-# # x.vis_low_price(abbreviations_of_companies)
-x.vis_volume_stock(abbreviations_of_companies)
+x.vis_daily_movement(abbreviations_of_companies)
+x.vis_high_price(abbreviations_of_companies)
+x.vis_low_price(abbreviations_of_companies)
+#x.vis_volume_stock(abbreviations_of_companies)
 # #
 
 #muminek = Parameters(abbreviations_of_companies)

@@ -45,7 +45,12 @@ layout = html.Div([
         ),
             dbc.Row([dbc.Col([
                 dbc.Button("Search valuable companies for today",
-                           color="secondary")],
+                           id="run-scrapper-and-find-best-comp",
+                           color="secondary"),
+
+html.Div(id='hidden-div', style={'display':'none'})
+
+            ],
                 md=8)
             ])
         ],
