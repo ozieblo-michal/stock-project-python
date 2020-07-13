@@ -32,12 +32,15 @@ layout = html.Div([
             dbc.Col(
                 [html.H2("Mateusz Jęczarek"),
                  html.P("""\
-                            Donec id elit non mi porta gravida at eget metus.Fusce dapibus, tellus ac cursus
-                            commodo, tortor mauris condimentumnibh, ut fermentum massa justo sit amet risus
-                            . Etiam porta semmalesuada magna mollis euismod. Donec sed odio dui. Donec id
-                            elit nonmi porta gravida at eget metus. Fusce dapibus, tellus ac cursuscommodo,
-                            tortor mauris condimentum nibh, ut fermentum massa justo sitamet risus. Etiam
-                            porta sem malesuada magna mollis euismod. Donec sedodio dui.
+                            index number: 89338
+                     """),
+                 html.P("""\
+                            A graduate of the University of Warsaw, currently a post-graduate student of data
+                            engineering - big data at the Warsaw School of Economics. He started his professional 
+                            career in the insurance sector (Generali, Warta), where he dealt with sales force 
+                            settlements. Then he worked as a data analyst in projects for companies in the FMCG 
+                            industry. Currently associated with the banking sector as a data warehouse analyst 
+                            responsible for automation of bonus system accounting.
                         """),
                  ])
             ])
