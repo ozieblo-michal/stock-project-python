@@ -8,7 +8,7 @@ import timeit
 # Need database.cvs file, which is a return from databasecreator.py run
 
 # `path` - Path to .csv files with historical values for each company.
-path = '/Users/michalozieblo/Desktop/stock-project-python/csv-files'
+path = '/Users/mateuszjeczarek/PycharmProjects/stock-project-python-new_master/wse-dash/databases/csv-files'
 
 class Parameters:
 
