@@ -6,6 +6,7 @@ from plotly.subplots import make_subplots
 import pandas as pd
 import numpy as np
 
+from databases.wsedfIntoDict import KmeanOptions
 
 from assets.navbar import Navbar
 
@@ -137,9 +138,9 @@ layout = html.Div([navbar,
                            [dbc.Col([
                                html.H1("Moving Average Convergence / Divergence")],
                                md=6),
-                            dbc.Col([html.P(),
-                                     html.H2("Description"),
-                                     html.P("""\
+                               dbc.Col([html.P(),
+                                        html.H2("Description"),
+                                        html.P("""\
                                                 Take into account the differences in values and the short-term exponential 
                                                 class, connections between them by examining the convergence and divergence 
                                                 of large moving. MACD is presented in the form of two lines: MACD and the 
@@ -150,87 +151,32 @@ layout = html.Div([navbar,
                                     html.Div([dbc.Button("WIG20", id="collapse-button",
                                                          className="mb-3", color="primary"),
                                               dbc.Collapse(
-                                                  dbc.Card(dcc.Checklist(options=[{'label': 'ALIOR', 'value': 'ALR'},
-                                                                                  {'label': 'PEKAO', 'value': 'PEO'},
-                                                                                  {'label': 'SANPL', 'value': 'SPL'},
-                                                                                  {'label': 'CCC', 'value': 'CCC'},
-                                                                                  {'label': 'CDPROJEKT', 'value': 'CDR'},
-                                                                                  {'label': 'CYFRPLSAT', 'value': 'CPS'},
-                                                                                  {'label': 'ENERGA', 'value': 'ENG'},
-                                                                                  {'label': 'EUROCASH', 'value': 'EUR'},
-                                                                                  {'label': 'LOTOS', 'value': 'LTS'},
-                                                                                  {'label': 'JSW', 'value': 'JSW'},
-                                                                                  {'label': 'KGHM', 'value': 'KGH'},
-                                                                                  {'label': 'LPP', 'value': 'LPP'},
-                                                                                  {'label': 'MBANK', 'value': 'MBK'},
-                                                                                  {'label': 'ORANGEPL', 'value': 'OPL'},
-                                                                                  {'label': 'PKOBP', 'value': 'PKO'},
-                                                                                  {'label': 'PGE', 'value': 'PGE'},
-                                                                                  {'label': 'PKNORLEN', 'value': 'PKN'},
-                                                                                  {'label': 'PGNIG', 'value': 'PGN'},
-                                                                                  {'label': 'PZU', 'value': 'PZU'},
-                                                                                  {'label': 'TAURONPE', 'value': 'TPE'}],
-                                                  value=['ALR', 'PEO', 'SPL', 'CCC', 'CDR', 'CPS', 'ENG', 'EUR', 'LTS',
-                                                         'JSW', 'KGH', 'LPP', 'MBK', 'OPL', 'PKO', 'PGE', 'PKN', 'PGN',
-                                                         'PZU', 'TPE'],
-                                                                         labelStyle={'display': 'block'})),
+                                                  dbc.Card(
+                                                      dcc.Checklist(options=KmeanOptions().wig20_options_for_kmean(),
+                                                                    value=[d['value'] for d in
+                                                                           KmeanOptions().wig20_options_for_kmean() if
+                                                                           'value' in d],
+                                                                    labelStyle={'display': 'block'})),
                                                   id="collapse")]),
                                     html.Div([dbc.Button("mWIG40", id="collapse-button-mWIG40",
                                                          className="mb-3", color="primary"),
                                               dbc.Collapse(
-                                                  dbc.Card(dcc.Checklist(options=[{'label': 'ALIOR', 'value': '11B'},
-                                                                                  {'label': 'PEKAO', 'value': 'ACP'},
-                                                                                  {'label': 'SANPL', 'value': 'AMC'},
-                                                                                  {'label': 'CCC', 'value': 'ASE'},
-                                                                                  {'label': 'CDPROJEKT', 'value': 'ATT'},
-                                                                                  {'label': 'CYFRPLSAT', 'value': 'BDX'},
-                                                                                  {'label': 'ENERGA', 'value': 'BFT'},
-                                                                                  {'label': 'EUROCASH', 'value': 'BHW'},
-                                                                                  {'label': 'LOTOS', 'value': 'BNP'},
-                                                                                  {'label': 'JSW', 'value': 'CAR'},
-                                                                                  {'label': 'KGHM', 'value': 'CIE'},
-                                                                                  {'label': 'LPP', 'value': 'CLN'},
-                                                                                  {'label': 'MBANK', 'value': 'CMR'},
-                                                                                  {'label': 'ORANGEPL', 'value': 'DOM'},
-                                                                                  {'label': 'PKOBP', 'value': 'DVL'},
-                                                                                  {'label': 'PGE', 'value': 'EAT'},
-                                                                                  {'label': 'PKNORLEN', 'value': 'ECH'},
-                                                                                  {'label': 'PGNIG', 'value': 'ENA'},
-                                                                                  {'label': 'PZU', 'value': 'ENG'},
-                                                                                  {'label': 'TAURONPE', 'value': 'EUR'},
-                                                                                  {'label': 'ALIOR', 'value': 'FMF'},
-                                                                                  {'label': 'PEKAO', 'value': 'FTE'},
-                                                                                  {'label': 'SANPL', 'value': 'GPW'},
-                                                                                  {'label': 'CCC', 'value': 'GTC'},
-                                                                                  {'label': 'CDPROJEKT', 'value': 'ING'},
-                                                                                  {'label': 'CYFRPLSAT', 'value': 'KER'},
-                                                                                  {'label': 'ENERGA', 'value': 'KRU'},
-                                                                                  {'label': 'EUROCASH', 'value': 'KTY'},
-                                                                                  {'label': 'LOTOS', 'value': 'LVC'},
-                                                                                  {'label': 'JSW', 'value': 'LWB'},
-                                                                                  {'label': 'KGHM', 'value': 'MAB'},
-                                                                                  {'label': 'LPP', 'value': 'MIL'},
-                                                                                  {'label': 'MBANK', 'value': 'NEU'},
-                                                                                  {'label': 'ORANGEPL', 'value': 'PKP'},
-                                                                                  {'label': 'PKOBP', 'value': 'PLW'},
-                                                                                  {'label': 'PGE', 'value': 'STP'},
-                                                                                  {'label': 'PKNORLEN', 'value': 'TEN'},
-                                                                                  {'label': 'PGNIG', 'value': 'VRG'},
-                                                                                  {'label': 'PZU', 'value': 'WPL'}],
-                                                  value=['11B', 'ACP', 'AMC', 'ASE', 'ATT', 'BDX', 'BFT', 'BHW', 'CAR',
-                                                         'CIE', 'CLN', 'CMR', 'DOM', 'DVL', 'EAT', 'ECH', 'ENA', 'ENG',
-                                                         'EUR', 'FMF', 'FTE', 'GPW', 'GTC', 'ING', 'KER', 'KRU', 'KTY',
-                                                         'LVC', 'LWB', 'MAB', 'MIL', 'NEU', 'PKP', 'PLW', 'STP', 'TEN',
-                                                         'VRG', 'WPL'],
-                                                  labelStyle={'display': 'block'})), id="collapse2")]),
-                                    html.Div([dbc.Button("mWIG80", id="collapse-button-mWIG80",
+                                                  dbc.Card(
+                                                      dcc.Checklist(options=KmeanOptions().mwig40_options_for_kmean(),
+                                                                    value=[d['value'] for d in
+                                                                           KmeanOptions().mwig40_options_for_kmean() if
+                                                                           'value' in d],
+                                                                    labelStyle={'display': 'block'})),
+                                                  id="collapse2")]),
+                                    html.Div([dbc.Button("sWIG80", id="collapse-button-sWIG80",
                                                          className="mb-3", color="primary"),
                                               dbc.Collapse(
-                                                  dbc.Card(dcc.Checklist(options=[{'label': 'ALIOR', 'value': '11B'},
-                                                                                  {'label': 'PEKAO', 'value': 'ACP'},
-                                                                                  {'label': 'SANPL', 'value': 'AMC'}],
-                                                                         value=['11B', 'ACP', 'AMC'],
-                                                                         labelStyle={'display': 'block'})),
+                                                  dbc.Card(
+                                                      dcc.Checklist(options=KmeanOptions().swig80_options_for_kmean(),
+                                                                    value=[d['value'] for d in
+                                                                           KmeanOptions().swig80_options_for_kmean() if
+                                                                           'value' in d],
+                                                                    labelStyle={'display': 'block'})),
                                                   id="collapse3")])
                                     ], justify="center", align="center", className="h-50"),
                            dcc.Graph(figure=fig),
