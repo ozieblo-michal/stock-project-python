@@ -12,7 +12,8 @@ from apps import (app1,
                   authors,
                   kmean,
                   contact,
-                  macd)
+                  macd,
+                  bb)
 
 from dataTransformations.kmeansclustering import KMeansClustering
 
@@ -37,7 +38,7 @@ def display_page(pathname):
     elif pathname == '/macd':
         return macd.layout
     elif pathname == '/bb':
-        return app1.layout
+        return bb.layout
     elif pathname == '/kmean':
         return kmean.layout
     elif pathname == '/nn':
