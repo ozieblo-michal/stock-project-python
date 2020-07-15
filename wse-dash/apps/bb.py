@@ -1,44 +1,14 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import pandas as pd
+
+from dataTransformations.bbplot import Subplots
 
 from databases.wsedfIntoDict import KmeanOptions
 
 from assets.navbar import Navbar
 
 navbar = Navbar()
-
-textareas = html.Div([dbc.Textarea(className="mb-3",
-                                   placeholder="Donec id elit non mi porta gravida at eget metus.")])
-
-df = pd.read_csv('/Users/mateuszjeczarek/PycharmProjects/stock-project-python-new_master/wse-dash/databases/csv-files/mwig40_d.csv')
-
-df['MA20'] = df['Zamkniecie'].rolling(window=20).mean()
-
-df['20dSTD'] = df['Zamkniecie'].rolling(window=20).std()
-
-df['Upper'] = df['MA20'] + (df['20dSTD']*2)
-df['Lower'] = df['MA20'] - (df['20dSTD']*2)
-
-fig = make_subplots(vertical_spacing = 0, rows=1, cols=1)
-
-fig.add_trace(go.Candlestick(x=df['Data'],
-                              open=df['Otwarcie'],
-                              high=df['Najwyzszy'],
-                              low=df['Najnizszy'],
-                              close=df['Zamkniecie']))
-
-fig.add_trace(go.Scatter(x=df['Data'], y = df['MA20'],
-                         name="MA20 Line"))
-
-fig.add_trace(go.Scatter(x=df['Data'], y = df['Upper'],
-                         name="Upper Line"))
-
-fig.add_trace(go.Scatter(x=df['Data'], y = df['Lower'],
-                         name="Lower Line"))
 
 layout = html.Div([navbar,
                    dbc.Container(
@@ -90,6 +60,6 @@ layout = html.Div([navbar,
                                                                     labelStyle={'display': 'block'})),
                                                   id="collapse3")])
                                     ], justify="center", align="center", className="h-50"),
-                           dcc.Graph(figure=fig),
+                           dcc.Graph(figure=Subplots().subplots()),
                             html.Br()],
                        className="mt-4")])
