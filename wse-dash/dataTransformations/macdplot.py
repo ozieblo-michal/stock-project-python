@@ -1,6 +1,5 @@
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
@@ -61,33 +60,23 @@ class Subplots:
 
     def subplots(self):
 
-#        fig = plt.figure(figsize=(12.2, 4.5))
-#        plt.scatter(df.index, df['Buy_Signal_price'], color='green', label='Buy', marker='^', alpha=1)
-#        plt.scatter(df.index, df['Sell_Signal_price'], color='red', label='Sell', marker='v', alpha=1)
-#        plt.plot(df['Zamkniecie'], label='Close Price', alpha = 0.35)
-#        plt.title('Close Price Buy & Sell Signal')
-#        plt.xticks(rotation = 45)
-#        plt.xlabel('Date')
-#        plt.ylabel('Close Price')
-#        plt.legend(loc = 'upper left')
-
-        fig = make_subplots(vertical_spacing = 0, rows=2, cols=1, row_heights=[0.5, 0.5])
+        fig = make_subplots(vertical_spacing=0, rows=2, cols=1, row_heights=[0.5, 0.5])
 
         fig.add_trace(go.Candlestick(x=df['Data'],
-                                      open=df['Otwarcie'],
-                                      high=df['Najwyzszy'],
-                                      low=df['Najnizszy'],
-                                      close=df['Zamkniecie']))
+                                     open=df['Otwarcie'],
+                                     high=df['Najwyzszy'],
+                                     low=df['Najnizszy'],
+                                     close=df['Zamkniecie']))
 
-        fig.add_trace(go.Scatter(x=df['Data'], y = df['MACD'],
+        fig.add_trace(go.Scatter(x=df['Data'], y=df['MACD'],
                                  name="MACD Line"),
-                                 row=2,
-                                 col=1)
+                      row=2,
+                      col=1)
 
-        fig.add_trace(go.Scatter(x=df['Data'], y = df['Signal Line'],
+        fig.add_trace(go.Scatter(x=df['Data'], y=df['Signal Line'],
                                  name="Signal Line"),
-                                 row=2,
-                                 col=1)
+                      row=2,
+                      col=1)
 
         fig.update_layout(xaxis=dict(zerolinecolor='black', showticklabels=False),
                           xaxis2=dict(showticklabels=False),
@@ -99,40 +88,9 @@ class Subplots:
                          mirror=False)
 
         fig.update_layout(
-                   title_text="MACD",
-                   autosize=True,
-                   showlegend=True,
-                   )
+            title_text="MACD",
+            autosize=True,
+            showlegend=True,
+        )
 
         return fig
-
-        # Add range slider - pojawia się problem z implementacją w przypadku kiedy mamy dwa wykresy
-        # fig.update_layout(
-        #    xaxis=dict(
-        #        rangeselector=dict(
-        #            buttons=list([
-        #                dict(count=1,
-        #                     label="1m",
-        #                     step="month",
-        #                     stepmode="backward"),
-        #                dict(count=6,
-        #                     label="6m",
-        #                     step="month",
-        #                     stepmode="backward"),
-        #                dict(count=1,
-        #                     label="YTD",
-        #                     step="year",
-        #                     stepmode="todate"),
-        #                dict(count=1,
-        #                     label="1y",
-        #                     step="year",
-        #                     stepmode="backward"),
-        #                dict(step="all")
-        #            ])
-        #        ),
-        #        rangeslider=dict(
-        #            visible=True
-        #        ),
-        #        type="date"
-        #    )
-        # )
