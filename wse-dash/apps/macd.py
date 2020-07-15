@@ -2,6 +2,12 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
 from dataTransformations.macdplot import Subplots
 
 from databases.wsedfIntoDict import KmeanOptions
@@ -57,6 +63,9 @@ layout = html.Div([navbar,
                                                                     labelStyle={'display': 'block'})),
                                                   id="collapse3")])
                                     ], justify="center", align="center", className="h-50"),
-                           dcc.Graph(figure=Subplots().subplots()),
+                                    html.Div([
+                                        dcc.Graph(id='g1', figure=Subplots().subplot_1())]),
+                                    html.Div([
+                                        dcc.Graph(id='g2', figure=Subplots().subplot_2())]),
                             html.Br()],
                        className="mt-4")])
