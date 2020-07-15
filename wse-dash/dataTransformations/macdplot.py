@@ -58,38 +58,76 @@ MACD = df['MACD']
 
 class Subplots:
 
-    def subplots(self):
+    def subplot_1(self):
 
-        fig = make_subplots(vertical_spacing=0, rows=2, cols=1, row_heights=[0.5, 0.5])
+        fig = make_subplots(vertical_spacing=0, rows=1, cols=1)
 
         fig.add_trace(go.Candlestick(x=df['Data'],
                                      open=df['Otwarcie'],
                                      high=df['Najwyzszy'],
                                      low=df['Najnizszy'],
                                      close=df['Zamkniecie']))
+        fig.add_trace(
+            go.Scatter(
+                mode='markers',
+                marker_symbol='triangle-up',
+                x=df['Data'],
+                y=df['Buy_Signal_price'],
+                marker=dict(
+                    color='rgba(85, 185, 39, 1)',
+                    size=10
+                ),
+                name='Buy Signal Price'),
+            row=1,
+            col=1)
+
+        fig.add_trace(
+            go.Scatter(
+                mode='markers',
+                marker_symbol='triangle-down',
+                x=df['Data'],
+                y=df['Sell_Signal_price'],
+                marker=dict(
+                    color='rgba(185, 39, 39, 1)',
+                    size=10
+                ),
+                name='Sell Signal Price'),
+            row=1,
+            col=1)
+
+        fig.update_layout(
+            title_text="Visually the stock buy and sell signal",
+            #autosize=True,
+            width=1290,
+            height=800,
+            showlegend=True,
+        )
+
+        return fig
+
+    def subplot_2(self):
+
+        fig = make_subplots(vertical_spacing=0, rows=1, cols=1)
 
         fig.add_trace(go.Scatter(x=df['Data'], y=df['MACD'],
                                  name="MACD Line"),
-                      row=2,
+                      row=1,
                       col=1)
 
         fig.add_trace(go.Scatter(x=df['Data'], y=df['Signal Line'],
                                  name="Signal Line"),
-                      row=2,
+                      row=1,
                       col=1)
 
         fig.update_layout(xaxis=dict(zerolinecolor='black', showticklabels=False),
                           xaxis2=dict(showticklabels=False),
                           xaxis_rangeslider_visible=False)
 
-        fig.update_xaxes(showline=True,
-                         linewidth=1,
-                         linecolor='black',
-                         mirror=False)
-
         fig.update_layout(
-            title_text="MACD",
-            autosize=True,
+            title_text="Visually the MACD and Signal Line",
+            #autosize=True,
+            width=1290,
+            height=800,
             showlegend=True,
         )
 
