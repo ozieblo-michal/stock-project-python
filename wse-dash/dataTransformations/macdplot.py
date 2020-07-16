@@ -56,6 +56,10 @@ df['Sell_Signal_price'] = a[1]
 
 MACD = df['MACD']
 
+df['Data'] = pd.to_datetime(df['Data'])
+
+df = df[df['Data'] > (df.Data.max() - pd.Timedelta('90 day'))]
+
 class Subplots:
 
     def subplot_1(self):
@@ -67,6 +71,12 @@ class Subplots:
                                      high=df['Najwyzszy'],
                                      low=df['Najnizszy'],
                                      close=df['Zamkniecie']))
+
+        fig.add_trace(go.Scatter(x=df['Data'], y=df['Zamkniecie'],
+                                 name="Close Price"),
+                      row=1,
+                      col=1)
+
         fig.add_trace(
             go.Scatter(
                 mode='markers',
@@ -75,7 +85,7 @@ class Subplots:
                 y=df['Buy_Signal_price'],
                 marker=dict(
                     color='rgba(85, 185, 39, 1)',
-                    size=10
+                    size=20
                 ),
                 name='Buy Signal Price'),
             row=1,
@@ -89,7 +99,7 @@ class Subplots:
                 y=df['Sell_Signal_price'],
                 marker=dict(
                     color='rgba(185, 39, 39, 1)',
-                    size=10
+                    size=20
                 ),
                 name='Sell Signal Price'),
             row=1,
@@ -127,8 +137,41 @@ class Subplots:
             title_text="Visually the MACD and Signal Line",
             #autosize=True,
             width=1290,
-            height=800,
+            height=500,
             showlegend=True,
         )
 
+        fig.update_layout(
+            xaxis=dict(
+                rangeselector=dict(
+                    buttons=list([
+                        dict(count=7,
+                             label="7d",
+                             step="day",
+                             stepmode="backward"),
+                        dict(count=14,
+                             label="14d",
+                             step="day",
+                             stepmode="backward"),
+                        dict(count=21,
+                             label="21d",
+                             step="day",
+                             stepmode="backward"),
+                        dict(count=1,
+                             label="1m",
+                             step="month",
+                             stepmode="backward"),
+                        dict(count=2,
+                             label="2m",
+                             step="month",
+                             stepmode="backward"),
+                        dict(step="all")
+                    ])
+                ),
+                rangeslider=dict(
+                    visible=True
+                ),
+                type="date"
+            )
+        )
         return fig
