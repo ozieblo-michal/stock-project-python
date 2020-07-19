@@ -118,9 +118,6 @@ class Visualisationtool:
                                                      low=df_low_price.values.flatten(),
                                                      close=df_close_price.values.flatten())
                                   ])
-            fig.show()
-
-            # https://plot.ly/python/candlestick-charts/
 
     if __init__ == "__main__":
         print("Visualisationtool run directly")
