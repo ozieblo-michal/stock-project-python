@@ -26,9 +26,13 @@ layout = html.Div([
                  ),
             dbc.Col(
                 [html.H2("Mateusz Jęczarek"),
-                 html.P("""index number: 89338"""),
-                 html.P("""e-mail adress: mateusz.jeczarek@gmail.com"""),
-                 html.P("""phone number: 728-326-989"""),
+                 html.P("""\
+                            index number: 89338
+                        """),
+                 html.P("""\
+                            e-mail adress: mateusz.jeczarek@gmail.com
+                            phone number: 728-326-989
+                        """),
                  ])
             ])
         ],
