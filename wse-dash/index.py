@@ -12,7 +12,9 @@ from apps import (app1,
                   rsi,
                   authors,
                   kmean,
-                  contact)
+                  contact
+                  macd,
+                  bb)
 
 from dataTransformations.kmeansclustering import KMeansClustering
 
