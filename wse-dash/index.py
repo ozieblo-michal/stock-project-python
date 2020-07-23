@@ -135,18 +135,17 @@ def run_script_onClick(n_clicks):
     if n_clicks is not None:
         return os.system('/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/scrapper.py')
 
-# supports ...
+# supports RSI visualizations tableRSI1
 @app.callback(
-    Output('dd-output-container', 'children'),
+    [Output('candle-plot', 'figure'),
+    Output('tableRSI1', 'figure'),
+     Output('tableRSI2', 'figure'),
+     Output('tableRSI3', 'figure'),
+     Output('tableRSI4', 'figure')],
     [Input('dropdown-so', 'value')])
-def update_output(value):
-    return 'You have selected "{}"'.format(value)
-
-# supports RSI visualizations
-@app.callback(
-    Output('candle-plot', 'figure'),
-    [Input('dropdown-so', 'value')])
-def update_output(value):
+def multi_output(value):
+    if value is None:
+        raise PreventUpdate
 
     path = '/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/wseStocks/data/daily/pl/wse stocks'
 
@@ -160,11 +159,11 @@ def update_output(value):
         date = datetime.strptime(str(i), '%Y%m%d').strftime('%m/%d/%Y')
         date_index.append(date)
 
-    fig = make_subplots(rows=3,
+    fig = make_subplots(rows=4,
                         cols=1,
-                        subplot_titles=('Title 1', 'Title 2', 'Title 3'),
+                        subplot_titles=('RSI EWMA', 'RSI SMA', 'Candlestick chart'),
                         shared_xaxes=True,
-                        vertical_spacing=0.1)
+                        vertical_spacing=0.05)
 
     # Window length for moving average
     window_length = 14
@@ -222,9 +221,126 @@ def update_output(value):
                   row=3, col=1)
 
     fig.update_layout(height=800,
-                      title_text="RSI (EWMA and SMA) for the last 90 trading days:")
+                      title_text="{} RSI (EWMA and SMA) - last 90 trading days:".format(value),
+                      shapes=[
+                          dict(type="line",
+                               xref="x1",
+                               yref="y1",
+                               x0=date_index[-90],
+                               y0=70,
+                               x1=date_index[-2],
+                               y1=70,
+                               line_width=1),
+                          dict(type="line",
+                               xref="x1",
+                               yref="y1",
+                               x0=date_index[-90],
+                               y0=30,
+                               x1=date_index[-2],
+                               y1=30,
+                               line_width=1),
+                          dict(type="line",
+                               xref="x2",
+                               yref="y2",
+                               x0=date_index[-90],
+                               y0=30,
+                               x1=date_index[-2],
+                               y1=30,
+                               line_width=1),
+                          dict(type="line",
+                               xref="x2",
+                               yref="y2",
+                               x0=date_index[-90],
+                               y0=70,
+                               x1=date_index[-2],
+                               y1=70,
+                               line_width=1),
+                          dict(type="rect",
+                               xref="x2",
+                               yref="y2",
+                               x0=date_index[-90],
+                               y0=70,
+                               x1=date_index[-2],
+                               y1=100,
+                               line_width=0,
+                               fillcolor="LightPink",
+                               opacity=0.3),
+                          dict(type="rect",
+                               xref="x2",
+                               yref="y2",
+                               x0=date_index[-90],
+                               y0=30,
+                               x1=date_index[-2],
+                               y1=0,
+                               line_width=0,
+                               fillcolor="PaleTurquoise",
+                               opacity=0.3),
+                          dict(type="rect",
+                               xref="x1",
+                               yref="y1",
+                               x0=date_index[-90],
+                               y0=70,
+                               x1=date_index[-2],
+                               y1=100,
+                               line_width=0,
+                               fillcolor="LightPink",
+                               opacity=0.3),
+                          dict(type="rect",
+                               xref="x1",
+                               yref="y1",
+                               x0=date_index[-90],
+                               y0=30,
+                               x1=date_index[-2],
+                               y1=0,
+                               line_width=0,
+                               fillcolor="PaleTurquoise",
+                               opacity=0.3)
+                      ])
 
-    return fig
+    overboughtEWMA = []
+    for i,j in enumerate(RSI1[-90:-1]):
+        if j > 70:
+            overboughtEWMA.append(date_index[i-90])
+
+    oversoldEWMA = []
+    for i,j in enumerate(RSI1[-90:-1]):
+        if j < 30:
+            oversoldEWMA.append(date_index[i-90])
+
+    overboughtSMA = []
+    for i,j in enumerate(RSI2[-90:-1]):
+        if j > 70:
+            overboughtSMA.append(date_index[i-90])
+
+    oversoldSMA = []
+    for i,j in enumerate(RSI2[-90:-1]):
+        if j < 30:
+            oversoldSMA.append(date_index[i-90])
+
+    fig2 = go.Figure(data=[go.Table(header=dict(values=["Overbought momentum since last 90 days via EWMA"]),
+                           cells=dict(values=[pd.DataFrame(overboughtEWMA)]))])
+
+    fig3 = go.Figure(data=[go.Table(header=dict(values=["Oversold momentum since last 90 days via EWMA"]),
+                           cells=dict(values=[pd.DataFrame(oversoldEWMA)]))])
+
+    fig4 = go.Figure(data=[go.Table(header=dict(values=["Overbought momentum since last 90 days via SMA"]),
+                           cells=dict(values=[pd.DataFrame(overboughtSMA)]))])
+
+    fig5 = go.Figure(data=[go.Table(header=dict(values=["Oversold momentum since last 90 days via SMA"]),
+                           cells=dict(values=[pd.DataFrame(oversoldSMA)]))])
+
+    fig.update_layout(margin=dict(l=0, r=0, t=80, b=0))
+    fig2.update_layout(margin=dict(l=0, r=20, t=0, b=5),
+                       height=170)
+    fig3.update_layout(margin=dict(l=0, r=20, t=0, b=5),
+                       height=170)
+    fig4.update_layout(margin=dict(l=0, r=20, t=0, b=5),
+                       height=170)
+    fig5.update_layout(margin=dict(l=0, r=20, t=0, b=30),
+                       height=170)
+
+    return fig, fig2, fig3, fig4, fig5
+
 
 # supports Bollinger Bands vizualizations
 
