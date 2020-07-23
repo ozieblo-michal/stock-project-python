@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import datetime
 
-df = pd.read_csv('/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/databases/csv-files/mwig40_d.csv')
+df = pd.read_csv('/Users/michalozieblo/Downloads/stock-project-python-new_master-2/wse-dash/databases/csv-files/mwig40_d.csv')
 
 df['MA20'] = df['Zamkniecie'].rolling(window=20).mean()
 
