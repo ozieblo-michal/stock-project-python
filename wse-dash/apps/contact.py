@@ -1,8 +1,6 @@
 import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
-#from dash.dependencies import Input, Output
-#from app import app
 
 from assets.navbar import Navbar
 
@@ -14,25 +12,20 @@ layout = html.Div([
         [dbc.Row(
             [dbc.Col(
                 [html.H2("Michał Oziębło"),
-                 html.P("""\
-                            index number: 73754
-                     """),
-                 html.P("""\
-                            CONTACT CONTACT
-                        """),
-                 #dbc.Button("View details",color="secondary")
+                 html.P("index number: 73754"),
+                 html.P("e-mail adress: ozieblo.michal@icloud.com"),
+                 html.P("phone number: +48 792 784 044")
+                 # to do: add LinkedIn and GitHub icons with hyperlinks,
+                 # bold text
                 ]
-            #, md=4
                  ),
             dbc.Col(
                 [html.H2("Mateusz Jęczarek"),
-                 html.P("""\
-                            index number: 89338
-                        """),
-                 html.P("""\
-                            e-mail adress: mateusz.jeczarek@gmail.com
-                            phone number: 728-326-989
-                        """),
+                 html.P("index number: 89338"),
+                 html.P("e-mail adress: mateusz.jeczarek@gmail.com"),
+                html.P("phone number: +48 792 784 044")
+                # to do: add LinkedIn and GitHub icons with hyperlinks,
+                # bold text
                  ])
             ])
         ],
