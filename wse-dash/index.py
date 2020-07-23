@@ -133,7 +133,7 @@ def toggle_collapse(n, is_open):
     [Input('run-scrapper-and-find-best-comp', 'n_clicks')])
 def run_script_onClick(n_clicks):
     if n_clicks is not None:
-        return os.system('/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/scrapper.py')
+        return os.system('python3 /Users/michalozieblo/Desktop/wse-dash/scrapper.py')
 
 # supports RSI visualizations tableRSI1
 @app.callback(
@@ -147,7 +147,7 @@ def multi_output(value):
     if value is None:
         raise PreventUpdate
 
-    path = '/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/wseStocks/data/daily/pl/wse stocks'
+    path = '/Users/michalozieblo/Desktop/wse-dash/wseStocks/data/daily/pl/wse stocks'
 
     df = pd.read_csv(os.path.join(path, r'%s.txt' % value),
                      delimiter=',',
