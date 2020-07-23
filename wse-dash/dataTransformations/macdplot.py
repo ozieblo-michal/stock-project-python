@@ -3,7 +3,7 @@ from plotly.subplots import make_subplots
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('/Users/mateuszjeczarek/PycharmProjects/stock-project-python-new_master/wse-dash/databases/csv-files/mwig40_d.csv')
+df = pd.read_csv('/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/databases/csv-files/mwig40_d.csv')
 
 #Calculate the MACD and signal line indicators
 #Calculate the short term exponential moving average (EMA)

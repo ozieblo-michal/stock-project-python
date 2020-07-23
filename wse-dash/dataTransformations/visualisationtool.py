@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from parameters import Parameters
 from pandas.plotting import register_matplotlib_converters # vis_volume_stock function requirement, due to future Pandas update
 
-path = '/Users/michalozieblo/Desktop/stock-project-python/csv-files'
+path = '/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/databases/csv-files'
 database = pd.read_csv(os.path.join(path,r'database.csv'), index_col=[0])
 
 class Visualisationtool:
