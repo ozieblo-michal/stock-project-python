@@ -63,22 +63,22 @@ class KMeansClustering:
                                'Companies':daily_movement_object.columns,
                                'Economic sector':y}).sort_values(by=['Labels','Economic sector'],axis = 0)
 
-            ENERGETICS_test = df.loc[df['Economic sector'] == 'ENERGETICS']
-            label = ENERGETICS_test['Labels'].to_list()
-            condition_ENERGETICS = (len(set(label)) <= 1)
-            print('------------------')
-            print(label)
-
-            GAMING_test = df.loc[df['Economic sector'] == 'GAMING']
-            label = GAMING_test['Labels'].to_list()
-            condition_GAMING = (len(set(label)) <= 1)
-            print(label)
-
-            print(condition_ENERGETICS, condition_GAMING)
-            print('------------------')
-
-            if all([condition_ENERGETICS, condition_GAMING]):
-                condition = True
+            # ENERGETICS_test = df.loc[df['Economic sector'] == 'ENERGETICS']
+            # label = ENERGETICS_test['Labels'].to_list()
+            # condition_ENERGETICS = (len(set(label)) <= 1)
+            # print('------------------')
+            # print(label)
+            #
+            # GAMING_test = df.loc[df['Economic sector'] == 'GAMING']
+            # label = GAMING_test['Labels'].to_list()
+            # condition_GAMING = (len(set(label)) <= 1)
+            # print(label)
+            #
+            # print(condition_ENERGETICS, condition_GAMING)
+            # print('------------------')
+            #
+            # if all([condition_ENERGETICS, condition_GAMING]):
+            condition = True #add 4 spaces, part of above if
 
         return df
 #
