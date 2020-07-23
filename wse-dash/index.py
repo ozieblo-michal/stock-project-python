@@ -349,7 +349,7 @@ def multi_output(value):
     [Input('dropdown-so', 'value')])
 def update_output(value):
 
-    path = '/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/wseStocks/data/daily/pl/wse stocks'
+    path = '/Users/michalozieblo/Downloads/stock-project-python-new_master-4/wse-dash/wseStocks/data/daily/pl/wse stocks'
 
     df = pd.read_csv(os.path.join(path, r'%s.txt' % value),
                     delimiter=',',
@@ -408,7 +408,7 @@ def update_output(value):
     [Input('dropdown-so', 'value')])
 def update_output(value):
 
-    path = '/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/wseStocks/data/daily/pl/wse stocks'
+    path = '/Users/michalozieblo/Downloads/stock-project-python-new_master-4/wse-dash/wseStocks/data/daily/pl/wse stocks'
 
     df = pd.read_csv(os.path.join(path, r'%s.txt' % value),
                     delimiter=',',
