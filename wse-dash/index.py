@@ -17,6 +17,7 @@ from apps import (app1,
                   bb)
 
 from dataTransformations.kmeansclustering import KMeansClustering
+from dataTransformations.dict_path import dict_path_data
 
 import os
 import numpy as np
@@ -147,7 +148,7 @@ def multi_output(value):
     if value is None:
         raise PreventUpdate
 
-    path = '/Users/michalozieblo/Desktop/wse-dash/wseStocks/data/daily/pl/wse stocks'
+    path = dict_path_data['wse_stocks']
 
     df = pd.read_csv(os.path.join(path, r'%s.txt' % value),
                      delimiter=',',
@@ -349,7 +350,7 @@ def multi_output(value):
     [Input('dropdown-so', 'value')])
 def update_output(value):
 
-    path = '/Users/michalozieblo/Downloads/stock-project-python-new_master-4/wse-dash/wseStocks/data/daily/pl/wse stocks'
+    path = dict_path_data['wse_stocks']
 
     df = pd.read_csv(os.path.join(path, r'%s.txt' % value),
                     delimiter=',',
@@ -392,11 +393,10 @@ def update_output(value):
                              y=df[-90:-1]['Lower'],
                              name="Lower Line"))
 
-    fig.update_layout(
-        title_text="Bollinger Bands for the last 90 trading days:",
-        width=1200,
-        height=800,
-        showlegend=True,
+    fig.update_layout(height=800,
+                      width=1200,
+                      title_text="{} Bollinger Bands for the last 90 trading days:".format(value),
+                      showlegend=True,
     )
 
     return fig
@@ -408,7 +408,7 @@ def update_output(value):
     [Input('dropdown-so', 'value')])
 def update_output(value):
 
-    path = '/Users/michalozieblo/Downloads/stock-project-python-new_master-4/wse-dash/wseStocks/data/daily/pl/wse stocks'
+    path = dict_path_data['wse_stocks']
 
     df = pd.read_csv(os.path.join(path, r'%s.txt' % value),
                     delimiter=',',
@@ -419,8 +419,6 @@ def update_output(value):
     for i in df['<DATE>']:
         date = datetime.strptime(str(i), '%Y%m%d').strftime('%m/%d/%Y')
         date_index.append(date)
-
-    # fig = make_subplots(vertical_spacing=0, rows=2, cols=1)
 
     fig = make_subplots(rows=2,
                         cols=1,
@@ -529,7 +527,7 @@ def update_output(value):
                   col=1)
 
     fig.update_layout(
-        title_text="Bollinger Bands for the last 90 trading days:",
+        title_text=" {} MACD for the last 90 trading days:".format(value),
         width=1200,
         height=1400,
     )

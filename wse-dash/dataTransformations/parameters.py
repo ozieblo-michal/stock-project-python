@@ -5,10 +5,12 @@ import sys
 from numpy import inf
 import timeit
 
+from dataTransformations.dict_path import dict_path_data
+
 # Need database.cvs file, which is a return from databasecreator.py run
 
 # `path` - Path to .csv files with historical values for each company.
-path = '/Users/michalozieblo/Desktop/stock-project-python/csv-files'
+path = dict_path_data['csv_files']
 
 class Parameters:
 
