@@ -11,5 +11,4 @@ dict_path_data = {
         '/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/databases/wse_swig80.csv',
     'wseDataframe' :
         '/Users/mateuszjeczarek/Documents/GitHub/stock-project-python/wse-dash/databases/wseDataframe.csv'
-
 }
