@@ -36,6 +36,8 @@ layout = html.Div([
              width={"size": 6, "offset": 3}),
              id="bb-row-3"),
          dbc.Row(dbc.Col([html.Div([dcc.Graph(id='macd-plot'),
+                                    dcc.Graph(id='tableMACD1'),
+                                    dcc.Graph(id='tableMACD2')
                                     ])]),
                  id="bb-row-4"),
          dbc.Row(dbc.Col([html.Div(id="update-table")],
