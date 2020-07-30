@@ -1,9 +1,10 @@
+# Import libraries
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import (Input,
                                Output,
                                State)
-
+# Import of modules
 from app import app
 from apps import (app1,
                   app2,
@@ -19,10 +20,12 @@ from apps import (app1,
 from dataTransformations.kmeansclustering import KMeansClustering
 from dataTransformations.dict_path import dict_path_data
 
+# Import libraries
 import os
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.express as px
 
 from plotly.subplots import make_subplots
 from datetime import datetime
@@ -139,7 +142,7 @@ def run_script_onClick(n_clicks):
 # supports RSI visualizations tableRSI1
 @app.callback(
     [Output('candle-plot', 'figure'),
-    Output('tableRSI1', 'figure'),
+     Output('tableRSI1', 'figure'),
      Output('tableRSI2', 'figure'),
      Output('tableRSI3', 'figure'),
      Output('tableRSI4', 'figure')],
@@ -317,7 +320,7 @@ def multi_output(value):
     for i,j in enumerate(RSI2[-90:-1]):
         if j < 30:
             oversoldSMA.append(date_index[i-90])
-
+    
     fig2 = go.Figure(data=[go.Table(header=dict(values=["Overbought momentum since last 90 days via EWMA"]),
                            cells=dict(values=[pd.DataFrame(overboughtEWMA)]))])
 
@@ -342,11 +345,11 @@ def multi_output(value):
 
     return fig, fig2, fig3, fig4, fig5
 
-
 # supports Bollinger Bands vizualizations
 
 @app.callback(
     Output('bb-plot', 'figure'),
+    # Output('tableBB1', 'figure'),
     [Input('dropdown-so', 'value')])
 def update_output(value):
 
@@ -370,9 +373,44 @@ def update_output(value):
 
     df['20dSTD'] = df['<CLOSE>'].rolling(window=window_length_bb).std()
 
-    df['Upper'] = df['MA20'] + (df['20dSTD'] * 2)
+    df['Upper_2'] = df['MA20'] + (df['20dSTD'] * 2)
 
-    df['Lower'] = df['MA20'] - (df['20dSTD'] * 2)
+    df['Upper_1'] = df['MA20'] + df['20dSTD']
+
+    df['Lower_2'] = df['MA20'] - (df['20dSTD'] * 2)
+
+    df['Lower_1'] = df['MA20'] - df['20dSTD']
+
+    # Funkcja się wali
+    # def buy_sell(signal):
+    #     buyZone = []
+    #     sellZone = []
+    #     flag = -1
+    #
+    #     for i in range(0, len(signal)):
+    #         if signal['<CLOSE>'][i] > signal['Upper_1'][i]:
+    #             sellZone.append(np.nan)
+    #             if flag != 1:
+    #                 buyZone.append(signal['<CLOSE>'][i])
+    #                 flag = 1
+    #             else:
+    #                 buyZone.append(np.nan)
+    #         elif signal['<CLOSE>'][i] < signal['Lower_1'][i]:
+    #             buyZone.append(np.nan)
+    #             if flag != 0:
+    #                 sellZone.append(signal['<CLOSE>'][i])
+    #                 flag = 0
+    #             else:
+    #                 sellZone.append(np.nan)
+    #         else:
+    #             buyZone.append(np.nan)
+    #             sellZone.append(np.nan)
+    #
+    #     return (buyZone, sellZone)
+    #
+    # a = buy_sell(df)
+    # df['Buy_Zone'] = a[0]
+    # df['Sell_Zone'] = a[1]
 
     fig.add_trace(go.Candlestick(x=date_index[-90:-1],
                                  open=df[-90:-1]['<OPEN>'],
@@ -386,11 +424,19 @@ def update_output(value):
                              name='MA20 Line'))
 
     fig.add_trace(go.Scatter(x=date_index[-90:-1],
-                             y=df[-90:-1]['Upper'],
+                             y=df[-90:-1]['Upper_2'],
+                             name='Upper Line_2'))
+
+    fig.add_trace(go.Scatter(x=date_index[-90:-1],
+                             y=df[-90:-1]['Lower_2'],
+                             name="Lower Line_2"))
+
+    fig.add_trace(go.Scatter(x=date_index[-90:-1],
+                             y=df[-90:-1]['Upper_1'],
                              name='Upper Line'))
 
     fig.add_trace(go.Scatter(x=date_index[-90:-1],
-                             y=df[-90:-1]['Lower'],
+                             y=df[-90:-1]['Lower_1'],
                              name="Lower Line"))
 
     fig.update_layout(height=800,
@@ -399,13 +445,25 @@ def update_output(value):
                       showlegend=True,
     )
 
-    return fig
+    # Create function to extract the day where the sell signal emerged
+    # sellZone = []
+    # for i, j in enumerate(df[-90:-1]['Sell_Zone']):
+    #     if pd.isnull(j) == False:
+    #         sellZone.append(date_index[i - 90])
+    #
+    # fig2 = go.Figure(data=[go.Table(header=dict(values=["test"]),
+    #                                 cells=dict(values=[pd.DataFrame(sellZone)]))])
+
+    return fig #, fig2
 
 # supports MACD vizualizations
 
 @app.callback(
-    Output('macd-plot', 'figure'),
+    [Output('macd-plot', 'figure'),
+     Output('tableMACD1', 'figure'),
+     Output('tableMACD2', 'figure')],
     [Input('dropdown-so', 'value')])
+
 def update_output(value):
 
     path = dict_path_data['wse_stocks']
@@ -477,18 +535,23 @@ def update_output(value):
     df['Buy_Signal_price'] = a[0]
     df['Sell_Signal_price'] = a[1]
 
+    # Create plot Sell and Boy signal
+
+    # Add MACD line to plot
     fig.add_trace(go.Scatter(x=date_index[-90:-1],
                              y=df[-90:-1]['MACD'],
                              name="MACD Line"),
                   row=1,
                   col=1)
 
+    # Add signal line to plot
     fig.add_trace(go.Scatter(x=date_index[-90:-1],
                              y=df[-90:-1]['Signal Line'],
                              name="Signal Line"),
                   row=1,
                   col=1)
 
+    # Create candle plot
     fig.add_trace(go.Candlestick(x=date_index[-90:-1],
                                  open=df[-90:-1]['<OPEN>'],
                                  high=df[-90:-1]['<HIGH>'],
@@ -498,12 +561,14 @@ def update_output(value):
                   row=2,
                   col=1)
 
+    # Add to candle plot close price line
     fig.add_trace(go.Scatter(x=date_index[-90:-1],
                              y=df[-90:-1]['<CLOSE>'],
                              name="Close Price"),
                   row=2,
                   col=1)
 
+    # Add to candle plot markers with Boy signal
     fig.add_trace(go.Scatter(mode='markers',
                              marker_symbol='triangle-up',
                              x=date_index[-90:-1],
@@ -515,6 +580,7 @@ def update_output(value):
                   row=2,
                   col=1)
 
+    # Add to candle plot markers with sell signal
     fig.add_trace(go.Scatter(mode='markers',
                              marker_symbol='triangle-down',
                              x=date_index[-90:-1],
@@ -525,14 +591,50 @@ def update_output(value):
                              name='Sell Signal Price'),
                   row=2,
                   col=1)
-
+    
+    # Add to tilet for plots and horizontal line to macd plot
     fig.update_layout(
         title_text=" {} MACD for the last 90 trading days:".format(value),
+        shapes=[
+            dict(type="line",
+                 xref="x1",
+                 yref="y1",
+                 x0=date_index[-90],
+                 y0=0,
+                 x1=date_index[-2],
+                 y1=0,
+                 line_width=2)],
         width=1200,
         height=1400,
     )
 
-    return fig
+    # Create function to extract the day where the sell signal emerged
+    sellSignal = []
+    for i, j in enumerate(df[-90:-1]['Sell_Signal_price']):
+        if pd.isnull(j) == False:
+            sellSignal.append(date_index[i - 90])
+
+    # Create function to extract the day where the boy signal emerged
+    buySignal = []
+    for i, j in enumerate(df[-90:-1]['Buy_Signal_price']):
+        if pd.isnull(j) == False:
+            buySignal.append(date_index[i - 90])
+
+    # Create table with day where the sell signal emerged
+    fig2 = go.Figure(data=[go.Table(header=dict(values=["Sell signals within last 90 days via MACD"]),
+                                   cells=dict(values=[pd.DataFrame(sellSignal)]))])
+
+    # Create table with day where the boy signal emerged
+    fig3 = go.Figure(data=[go.Table(header=dict(values=["Buy signals within last 90 days via MACD"]),
+                                    cells=dict(values=[pd.DataFrame(buySignal)]))])
+
+    fig2.update_layout(margin=dict(l=0, r=20, t=0, b=5),
+                       height=170)
+
+    fig3.update_layout(margin=dict(l=0, r=20, t=0, b=5),
+                       height=170)
+
+    return fig, fig2, fig3
 
 if __name__ == '__main__':
     app.run_server(debug=True)
