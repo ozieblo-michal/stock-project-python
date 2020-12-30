@@ -1,4 +1,11 @@
 # stock-project-python
+
+**INFO: evaluated into `ozieblo-repository/WSE-dashboard project` !**
+
+
+
+
+
 K-means classification of listed companies to economic sectors based on the price movement and visualization of price and stock volume changes (different algorythms and the dashboard in the future). Sample results below.
 
 ### K-means:
